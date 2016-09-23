@@ -1,6 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from sklearn.cross_validation import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+
+
 
 
 def load_data(n=None):
@@ -46,7 +50,7 @@ def plot_type(X, idn=None, col='shape', ax=None):
 def plot_types(X, y, l, col):
     """plots a grid of feature vectors with leaves of a type 
     grouped together"""
-    
+
     n = len(l)
     nr = (len(l)/10) + 1
     nc = 10
@@ -58,3 +62,17 @@ def plot_types(X, y, l, col):
         plot_type(xx, col=col)
 
     plt.show()
+
+
+def analysis_rndfrst(X, y, e):
+    print "feature matrix", X.shape
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, train_size=0.7)
+    clf = RandomForestClassifier(n_estimators=e, 
+        min_samples_split=4, max_depth=20)
+
+    clf.fit(X_train, y_train)
+    print clf.score(X_test, y_test)
+
+    return clf
