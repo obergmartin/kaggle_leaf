@@ -1,4 +1,6 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+
 
 
 def load_data(n=None):
@@ -22,3 +24,20 @@ def get_cols(r, col='shape'):
     for i in range(1,65):
         v.append(r[col+str(i)])
     return v
+
+
+def plot_type(X, idn=None, col='shape', ax=None):
+    """plots a feature vector for the passed rows in X"""
+    if ax is not None:
+        plt.sca(ax)
+
+    for i in range(X.shape[0]):
+        xx = X.iloc[i]
+        #print xx
+        shp = get_cols(xx, col)
+        plt.plot(shp)
+    if idn is not None:
+        plt.legend(idn)
+    
+    if ax is not None:
+        plt.show()
