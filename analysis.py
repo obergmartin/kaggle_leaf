@@ -41,3 +41,20 @@ def plot_type(X, idn=None, col='shape', ax=None):
     
     if ax is not None:
         plt.show()
+
+
+def plot_types(X, y, l, col):
+    """plots a grid of feature vectors with leaves of a type 
+    grouped together"""
+    
+    n = len(l)
+    nr = (len(l)/10) + 1
+    nc = 10
+    if n <=10:
+        nc = n
+    for i, ll in enumerate(l):
+        plt.subplot(nr, nc, i+1)
+        xx = X.loc[y == ll]
+        plot_type(xx, col=col)
+
+    plt.show()
