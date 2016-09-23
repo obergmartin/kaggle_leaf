@@ -15,3 +15,10 @@ def load_testdata():
     X, idn = dat.iloc[:,1:], dat['id']
 
     return (X, idn)
+
+
+def get_cols(r, col='shape'):
+    v = []
+    for i in range(1,65):
+        v.append(r[col+str(i)])
+    return v
