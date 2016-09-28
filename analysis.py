@@ -1,8 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
+
 
 from sklearn.cross_validation import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+
+from sklearn import grid_search
 
 
 def load_data(n=None, fix=0):
@@ -77,6 +81,12 @@ def plot_types(X, y, l, col):
 
 
 def analysis_rndfrst(X, y, e):
+    parameters = {
+        'max_features':[10,20],#[3,4,5,6,7,8],
+        #'max_depth':[None, 2,3,4],
+        'min_samples_leaf':[1,5,10],
+        'min_samples_split':[2,10,20]}#[2,3,4,5,10,15,20]}
+
     print "feature matrix", X.shape
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -87,4 +97,20 @@ def analysis_rndfrst(X, y, e):
     clf.fit(X_train, y_train)
     print clf.score(X_test, y_test)
 
-    return clf
+    grid = grid_search.GridSearchCV(clf, parameters)
+    # Fit tuned
+    t = time.time()
+    grid.fit(X_train, y_train)
+    print 'Fit time:', time.time() - t
+
+    # Predict tuned
+    t = time.time()
+    grid.predict(X_test)
+    print 'Predict time', time.time() - t 
+
+    # Score tuned
+    print 'grid search'
+    print grid.best_score_
+    print grid.best_estimator_
+    
+    return grid
