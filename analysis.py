@@ -5,12 +5,24 @@ from sklearn.cross_validation import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 
 
+def load_data(n=None, fix=0):
+    to_remove = [1253, 918, #from 93
+                 1135,       # from 90
+                 245,       # from 14
+                 490,
+                 779,
+                 767# from 65
+                 ]
 
-
-def load_data(n=None):
     fn = 'train.csv'
     dat = pd.read_csv(fn, nrows=n)
     X, y, idn = dat.iloc[:,2:], dat['species'], dat['id']
+
+    if fix:
+        to_keep = ~idn.isin(to_remove)
+        X = X[to_keep]
+        y = y[to_keep]
+        idn = idn[to_keep]
 
     return (X, y, idn)
 
